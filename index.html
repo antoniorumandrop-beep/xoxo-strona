@@ -1,0 +1,473 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XOXO Beauty Lab — Depilacja laserowa Złotoryja</title>
+<meta name="description" content="Depilacja laserowa w Złotoryi. Trwałe usuwanie owłosienia dla kobiet i mężczyzn. Studio XOXO Beauty Lab — Oliwia i Ilona Boguś.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF3EC;
+  --cream-deep:#F1E5D6;
+  --ink:#1C1917;
+  --ink-soft:#4A423B;
+  --gold:#A6864E;
+  --gold-light:#C9AE7C;
+  --line:rgba(166,134,78,.28);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Jost',system-ui,sans-serif;
+  font-weight:300;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;font-weight:500;line-height:1.12}
+.eyebrow{
+  font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);font-weight:400;
+}
+
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,243,236,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.nav-logo{height:26px}
+.nav-links{display:flex;gap:30px;list-style:none}
+.nav-links a{
+  color:var(--ink-soft);text-decoration:none;font-size:.82rem;
+  letter-spacing:.1em;text-transform:uppercase;transition:color .25s;
+}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{
+  background:var(--ink);color:var(--cream);text-decoration:none;
+  padding:11px 24px;font-size:.75rem;letter-spacing:.14em;
+  text-transform:uppercase;transition:background .25s;
+}
+.nav-cta:hover{background:var(--gold)}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* ---------- HERO ---------- */
+header{padding:96px 0 84px;text-align:center;position:relative;overflow:hidden}
+header:before{
+  content:"XO";position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);
+  font-family:'Playfair Display',serif;font-size:34rem;line-height:1;
+  color:rgba(166,134,78,.055);pointer-events:none;user-select:none;z-index:0;
+}
+header .wrap{position:relative;z-index:1}
+.hero-logo{width:220px;margin:0 auto 34px;display:block}
+header h1{font-size:clamp(2.5rem,6.5vw,4.4rem);letter-spacing:-.015em}
+header h1 em{font-style:italic;color:var(--gold);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:8px;text-decoration-color:var(--gold-light)}
+.hero-sub{
+  max-width:520px;margin:26px auto 0;font-size:1.03rem;color:var(--ink-soft);
+}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:38px}
+.btn{
+  text-decoration:none;padding:15px 34px;font-size:.78rem;
+  letter-spacing:.15em;text-transform:uppercase;transition:all .25s;display:inline-block;
+}
+.btn-dark{background:var(--ink);color:var(--cream)}
+.btn-dark:hover{background:var(--gold)}
+.btn-ghost{border:1px solid var(--ink);color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:var(--cream)}
+.hero-meta{
+  margin-top:46px;display:flex;gap:38px;justify-content:center;flex-wrap:wrap;
+  font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+}
+
+/* ---------- SECTION ---------- */
+section{padding:88px 0}
+.sec-head{text-align:center;margin-bottom:52px}
+.sec-head h2{font-size:clamp(1.9rem,4vw,2.9rem);margin-top:12px}
+.sec-head p{max-width:560px;margin:18px auto 0;color:var(--ink-soft)}
+
+.rule{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  margin:0 auto;max-width:200px;
+}
+.rule span{flex:1;height:1px;background:var(--line)}
+.rule svg{width:11px;fill:var(--gold);flex-shrink:0}
+
+/* ---------- SIGNATURE: ŚCIEŻKA ZABIEGÓW ---------- */
+.journey{background:var(--cream-deep);}
+.track{position:relative;margin-top:8px;padding:30px 0 12px}
+.track-line{
+  position:absolute;left:0;right:0;top:94px;height:1px;background:var(--line);
+}
+.track-fill{
+  position:absolute;left:0;top:94px;height:1px;background:var(--gold);
+  width:0;transition:width 1.6s cubic-bezier(.4,0,.2,1);
+}
+.steps{display:flex;position:relative;gap:0}
+.step{
+  flex:1;text-align:center;position:relative;cursor:default;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .5s ease,transform .5s ease;
+}
+.step.on{opacity:1;transform:none}
+.step-pct{
+  font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--ink);
+  height:44px;display:flex;align-items:flex-end;justify-content:center;
+}
+.step-dot{
+  width:9px;height:9px;border-radius:50%;background:var(--cream-deep);
+  border:1px solid var(--gold);margin:16px auto 0;position:relative;z-index:2;
+  transition:background .3s,transform .3s;
+}
+.step:hover .step-dot{background:var(--gold);transform:scale(1.5)}
+.step-n{
+  margin-top:14px;font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-soft);
+}
+.step-note{
+  margin-top:6px;font-size:.72rem;color:var(--gold);
+  min-height:32px;padding:0 4px;line-height:1.4;
+}
+@media(max-width:760px){
+  .steps{flex-wrap:wrap;gap:26px 0}
+  .step{flex:0 0 33.33%}
+  .track-line,.track-fill{display:none}
+}
+.journey-foot{
+  margin-top:34px;text-align:center;font-size:.9rem;color:var(--ink-soft);
+  max-width:600px;margin-left:auto;margin-right:auto;
+}
+
+/* ---------- CENNIK ---------- */
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+@media(max-width:760px){.price-grid{grid-template-columns:1fr;gap:0}}
+.price-row{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding:15px 0;border-bottom:1px solid var(--line);
+}
+.price-row span:first-child{font-size:.97rem}
+.price-row b{
+  font-family:'Playfair Display',serif;font-weight:500;font-size:1.12rem;
+  white-space:nowrap;
+}
+.packages{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:760px){.packages{grid-template-columns:1fr}}
+.pkg{
+  border:1px solid var(--gold);padding:30px 28px;position:relative;background:var(--cream);
+}
+.pkg .eyebrow{display:block;margin-bottom:12px}
+.pkg h3{font-size:1.22rem;line-height:1.35}
+.pkg-price{
+  font-family:'Playfair Display',serif;font-size:2.2rem;margin-top:16px;display:block;
+}
+.pkg-save{font-size:.8rem;color:var(--gold);margin-top:4px}
+
+/* ---------- CARDS ---------- */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:760px){.cards{grid-template-columns:1fr}}
+.card{background:var(--cream-deep);padding:36px 32px}
+.card h3{font-size:1.35rem;margin-bottom:20px}
+.card ul{list-style:none}
+.card li{
+  padding:9px 0 9px 22px;position:relative;font-size:.93rem;color:var(--ink-soft);
+  border-bottom:1px solid rgba(166,134,78,.15);
+}
+.card li:last-child{border-bottom:0}
+.card li:before{
+  content:"";position:absolute;left:0;top:17px;width:6px;height:6px;
+  border:1px solid var(--gold);transform:rotate(45deg);
+}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:760px;margin:0 auto}
+details{border-bottom:1px solid var(--line)}
+summary{
+  padding:22px 0;cursor:pointer;list-style:none;font-size:1.03rem;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";color:var(--gold);font-size:1.35rem;transition:transform .3s}
+details[open] summary:after{transform:rotate(45deg)}
+details p{padding:0 0 22px;color:var(--ink-soft);font-size:.95rem;max-width:92%}
+
+/* ---------- KONTAKT ---------- */
+.contact{background:var(--ink);color:var(--cream);text-align:center}
+.contact h2{color:var(--cream)}
+.contact .eyebrow{color:var(--gold-light)}
+.contact .rule span{background:rgba(201,174,124,.3)}
+.contact .rule svg{fill:var(--gold-light)}
+.phones{
+  display:flex;gap:14px 56px;justify-content:center;flex-wrap:wrap;margin-top:34px;
+}
+.phone{text-decoration:none;color:var(--cream);text-align:center}
+.phone small{
+  display:block;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-light);margin-bottom:6px;
+}
+.phone span{font-family:'Playfair Display',serif;font-size:1.6rem;transition:color .25s}
+.phone:hover span{color:var(--gold-light)}
+.addr{margin-top:40px;font-size:.9rem;color:rgba(250,243,236,.72);line-height:1.9}
+
+footer{
+  background:var(--ink);color:rgba(250,243,236,.45);
+  border-top:1px solid rgba(201,174,124,.2);
+  padding:26px 0;font-size:.74rem;
+}
+.foot-in{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:rgba(250,243,236,.45)}
+
+/* ---------- REVEAL ---------- */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .rv,.step{opacity:1;transform:none}
+}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+::selection{background:var(--gold);color:var(--cream)}
+.btn,.nav-cta{border-radius:1px}
+.pkg{transition:transform .3s ease,box-shadow .3s ease}
+.pkg:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(28,25,23,.08)}
+.price-row{transition:padding-left .25s ease}
+.price-row:hover{padding-left:8px}
+</style>
+
+<nav>
+  <div class="wrap nav-in">
+    <img class="nav-logo" src="data:image/png;base64,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" alt="XOXO Beauty Lab">
+    <ul class="nav-links">
+      <li><a href="#przebieg">Przebieg</a></li>
+      <li><a href="#cennik">Cennik</a></li>
+      <li><a href="#zalecenia">Zalecenia</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="nav-cta" href="https://calendar.app.google/13awFvhqzAGdTnPQ6" target="_blank" rel="noopener">Umów wizytę</a>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <img class="hero-logo" src="data:image/png;base64,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" alt="XOXO Beauty Lab">
+    <h1>Gładka skóra<br>bez <em>dojeżdżania</em> do Wrocławia</h1>
+    <p class="hero-sub">
+      Depilacja laserowa dla kobiet i mężczyzn — w samym centrum Złotoryi.
+      Prowadzimy Cię przez całą serię, od pierwszej wizyty do trwałego efektu.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-dark" href="https://calendar.app.google/13awFvhqzAGdTnPQ6" target="_blank" rel="noopener">Umów wizytę</a>
+      <a class="btn btn-ghost" href="#cennik">Zobacz cennik</a>
+    </div>
+    <div class="hero-meta">
+      <span>Oliwia &amp; Ilona Boguś</span>
+      <span>Bezpłatna konsultacja</span>
+      <span>Złotoryja</span>
+    </div>
+  </div>
+</header>
+
+<!-- SIGNATURE -->
+<section class="journey" id="przebieg">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Jak to przebiega</span>
+      <h2>Efekt buduje się w serii</h2>
+      <p>
+        Laser działa tylko na włosy w fazie wzrostu — dlatego jedna wizyta nie wystarczy.
+        Poniżej realny przebieg: ile włosków ubywa po kolejnych zabiegach.
+      </p>
+    </div>
+
+    <div class="track">
+      <div class="track-line"></div>
+      <div class="track-fill" id="fill"></div>
+      <div class="steps" id="steps">
+        <div class="step" data-pct="20"><div class="step-pct">20%</div><div class="step-dot"></div><div class="step-n">Zabieg 1</div><div class="step-note">Pierwsze włoski wypadają po 2 tyg.</div></div>
+        <div class="step" data-pct="40"><div class="step-pct">40%</div><div class="step-dot"></div><div class="step-n">Zabieg 2</div><div class="step-note">Odstęp ok. 4 tygodnie</div></div>
+        <div class="step" data-pct="55"><div class="step-pct">55%</div><div class="step-dot"></div><div class="step-n">Zabieg 3</div><div class="step-note">Odrost wyraźnie rzadszy</div></div>
+        <div class="step" data-pct="70"><div class="step-pct">70%</div><div class="step-dot"></div><div class="step-n">Zabieg 5</div><div class="step-note">Włos cieńszy i jaśniejszy</div></div>
+        <div class="step" data-pct="85"><div class="step-pct">85%</div><div class="step-dot"></div><div class="step-n">Zabieg 7</div><div class="step-note">Golenie prawie zbędne</div></div>
+        <div class="step" data-pct="95"><div class="step-pct">95%</div><div class="step-dot"></div><div class="step-n">Zabieg 8–10</div><div class="step-note">Efekt trwały</div></div>
+      </div>
+    </div>
+
+    <p class="journey-foot rv">
+      Po zakończeniu serii wystarczy jeden zabieg przypominający raz na 1–2 lata.
+      Plan wizyt ustalamy indywidualnie — na konsultacji sprawdzamy typ skóry i włosa.
+    </p>
+  </div>
+</section>
+
+<!-- CENNIK -->
+<section id="cennik">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Cennik</span>
+      <h2>Ceny za pojedynczy zabieg</h2>
+      <div class="rule" style="margin-top:22px"><span></span><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.8 12 21 12 21z"/></svg><span></span></div>
+    </div>
+
+    <div class="price-grid rv">
+      <div>
+        <div class="price-row"><span>Wąsik</span><b>119 zł</b></div>
+        <div class="price-row"><span>Broda</span><b>119 zł</b></div>
+        <div class="price-row"><span>Baczki</span><b>119 zł</b></div>
+        <div class="price-row"><span>Kark</span><b>119 zł</b></div>
+        <div class="price-row"><span>Pachy</span><b>199 zł</b></div>
+        <div class="price-row"><span>Bikini</span><b>199 zł</b></div>
+        <div class="price-row"><span>Bikini głębokie</span><b>299 zł</b></div>
+        <div class="price-row"><span>Brzuch cały</span><b>299 zł</b></div>
+      </div>
+      <div>
+        <div class="price-row"><span>Klatka piersiowa</span><b>299 zł</b></div>
+        <div class="price-row"><span>Łydki</span><b>249 zł</b></div>
+        <div class="price-row"><span>Plecy (całe)</span><b>299 zł</b></div>
+        <div class="price-row"><span>Pośladki</span><b>199 zł</b></div>
+        <div class="price-row"><span>Przedramiona + łokcie + dłonie</span><b>249 zł</b></div>
+        <div class="price-row"><span>Ramiona</span><b>199 zł</b></div>
+        <div class="price-row"><span>Uda</span><b>299 zł</b></div>
+      </div>
+    </div>
+
+    <div class="packages rv">
+      <div class="pkg">
+        <span class="eyebrow">Pakiet</span>
+        <h3>Uda + Łydki</h3>
+        <span class="pkg-price">500 zł</span>
+        <div class="pkg-save">Oszczędzasz 48 zł</div>
+      </div>
+      <div class="pkg">
+        <span class="eyebrow">Pakiet</span>
+        <h3>Pachy + Bikini głębokie + Łydki</h3>
+        <span class="pkg-price">699 zł</span>
+        <div class="pkg-save">Oszczędzasz 48 zł</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZALECENIA -->
+<section id="zalecenia" style="background:var(--cream-deep)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Przygotowanie</span>
+      <h2>Przed i po zabiegu</h2>
+    </div>
+    <div class="cards rv">
+      <div class="card">
+        <h3>Przed wizytą</h3>
+        <ul>
+          <li>Nie wyrywaj włosków pęsetą ani woskiem przez 2–3 tygodnie</li>
+          <li>Zostaw krótki odrost — około 2–3 mm</li>
+          <li>Unikaj opalania i solarium</li>
+          <li>Zgłoś przyjmowane leki i zioła światłouczulające</li>
+          <li>W trakcie antybiotykoterapii zabiegu nie wykonujemy</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Po zabiegu</h3>
+        <ul>
+          <li>Możesz normalnie ćwiczyć, pocić się i golić skórę</li>
+          <li>Basen i sauna — po 24 godzinach</li>
+          <li>Bez opalania i solarium przez 4–5 dni</li>
+          <li>Włoski usuwaj wyłącznie maszynką lub trymerem</li>
+          <li>Stosuj preparaty regenerujące, unikaj drażniących kosmetyków</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="eyebrow">Pytania</span>
+      <h2>Zanim przyjdziesz</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>Czy zabieg boli?</summary>
+        <p>Odczucie przypomina delikatne strzyknięcie ciepłą gumką. Głowica lasera chłodzi skórę w trakcie pracy, więc zabieg jest dobrze tolerowany — najbardziej wrażliwe są okolice bikini i wąsika.</p>
+      </details>
+      <details>
+        <summary>Ile zabiegów potrzebuję?</summary>
+        <p>Zazwyczaj 8–10, w odstępach od 4 tygodni w górę. Dokładna liczba zależy od koloru i grubości włosa oraz gospodarki hormonalnej — oceniamy to na konsultacji.</p>
+      </details>
+      <details>
+        <summary>Kiedy zobaczę pierwsze efekty?</summary>
+        <p>Około 2 tygodnie po pierwszym zabiegu wypada 60–70% naświetlonych włosków. Nowe włoski, które pojawią się po 2–3 tygodniach, to naturalny etap cyklu wzrostu, a nie brak efektu.</p>
+      </details>
+      <details>
+        <summary>Jakie są przeciwwskazania?</summary>
+        <p>Między innymi ciąża i karmienie piersią, świeża opalenizna, aktywne infekcje i opryszczka, choroby skóry w miejscu zabiegu, retinoidy, leki światłouczulające oraz rozrusznik serca. Pełną listę omawiamy na konsultacji i w formularzu zgody.</p>
+      </details>
+      <details>
+        <summary>Czy mężczyźni też mogą?</summary>
+        <p>Tak. Najczęściej wykonujemy u panów kark, brodę, klatkę piersiową i plecy.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="contact" id="kontakt">
+  <div class="wrap">
+    <span class="eyebrow">Kontakt</span>
+    <h2 style="font-size:clamp(1.9rem,4vw,2.9rem);margin-top:12px">Zapisz się już dziś</h2>
+    <div class="rule" style="margin-top:22px"><span></span><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.8 12 21 12 21z"/></svg><span></span></div>
+    <p style="max-width:520px;margin:26px auto 0;color:rgba(250,243,236,.75);font-size:.97rem">
+      Wybierz wolny termin w naszym kalendarzu online — potwierdzenie
+      i przypomnienie dostaniesz automatycznie na maila.
+    </p>
+    <div class="hero-actions" style="margin-top:30px">
+      <a class="btn" style="background:var(--gold);color:var(--ink)" href="https://calendar.app.google/13awFvhqzAGdTnPQ6" target="_blank" rel="noopener">Zarezerwuj termin online</a>
+    </div>
+    <div class="phones">
+      <a class="phone" href="tel:+48687061471"><small>Oliwia</small><span>687 061 471</span></a>
+      <a class="phone" href="tel:+48695369875"><small>Ilona</small><span>695 369 875</span></a>
+      <a class="phone" href="mailto:xoxo.beautylabb@gmail.com"><small>E-mail</small><span style="font-size:1.15rem">xoxo.beautylabb@gmail.com</span></a>
+    </div>
+    <div class="addr">
+      ul. Cmentarna 28, 59-500 Złotoryja<br>
+      Wiadomość na Instagramie lub mailowo — odpowiadamy tego samego dnia
+    </div>
+    <div style="margin-top:26px">
+      <a href="https://maps.google.com/?q=Cmentarna+28,+59-500+Z%C5%82otoryja" target="_blank" rel="noopener"
+         style="color:var(--gold-light);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(201,174,124,.4);padding-bottom:3px">
+        Zobacz na mapie
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>© 2026 XOXO Beauty Lab — Depilacja laserowa, Złotoryja · xoxobeautylab.pl</span>
+    <span><a href="#">Polityka prywatności</a></span>
+  </div>
+</footer>
+
+<script>
+// scroll reveal
+const io = new IntersectionObserver((es)=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
+},{threshold:.15});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// journey animation
+const stepsWrap = document.getElementById('steps');
+const steps = [...document.querySelectorAll('.step')];
+const fill = document.getElementById('fill');
+const jio = new IntersectionObserver((es)=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    steps.forEach((s,i)=>setTimeout(()=>s.classList.add('on'), i*170));
+    setTimeout(()=>{ fill.style.width = '100%'; }, 260);
+    jio.unobserve(e.target);
+  });
+},{threshold:.3});
+if(stepsWrap) jio.observe(stepsWrap);
+</script>
