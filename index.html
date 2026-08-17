@@ -226,7 +226,12 @@ footer a{color:rgba(250,243,236,.45)}
   display:flex;align-items:center;justify-content:space-between;gap:18px;
 }
 .svc summary::-webkit-details-marker{display:none}
-.svc-t h3{font-size:1.45rem;margin-bottom:6px}
+.svc-t h3{font-size:1.45rem;margin-bottom:6px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.tech{
+  font-family:'Jost',sans-serif;font-weight:500;font-size:.6rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  border:1px solid var(--gold);padding:4px 9px;white-space:nowrap;
+}
 .svc-t p{font-size:.9rem;color:var(--ink-soft);max-width:560px}
 .svc-toggle{
   flex-shrink:0;width:38px;height:38px;border:1px solid var(--gold);
@@ -313,8 +318,9 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
       <span class="eyebrow">Jak to przebiega</span>
       <h2>Efekt buduje się w serii</h2>
       <p>
-        Laser działa tylko na włosy w fazie wzrostu — dlatego jedna wizyta nie wystarczy.
-        Poniżej realny przebieg: ile włosków ubywa po kolejnych zabiegach.
+        Pracujemy w technologii <b>SHR</b>, łączącej światło <b>IPL</b> z falą <b>RF</b> —
+        skuteczna i komfortowa depilacja. Laser działa tylko na włosy w fazie wzrostu,
+        dlatego jedna wizyta nie wystarczy. Poniżej realny przebieg serii.
       </p>
     </div>
 
@@ -423,26 +429,26 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
 <section id="zabiegi">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="eyebrow">Uzupełnij efekt</span>
-      <h2>Zabiegi laserowe na skórę</h2>
+      <h2>Zabiegi światłem na skórę</h2>
       <p>
-        Nasza specjalność to depilacja laserowa — ale ten sam laser i światło IPL
-        potrafią więcej. Trzy zabiegi, które poprawiają koloryt, jędrność
-        i wygląd skóry. Kliknij, żeby zobaczyć opis i cennik.
+        Nasza specjalność to depilacja laserowa, ale oferujemy również zabiegi
+        z wykorzystaniem technologii E-Light i SSR. Pomagają one wyrównać koloryt,
+        zredukować przebarwienia i rumień, poprawić napięcie oraz ogólny wygląd
+        skóry. Kliknij, aby poznać szczegóły i cennik.
       </p>
     </div>
 
     <details class="svc rv">
       <summary>
         <div class="svc-t">
-          <h3>Zamykanie naczynek laserem</h3>
+          <h3>Zamykanie naczynek laserem <span class="tech">E-Light</span></h3>
           <p>Rozszerzone naczynka i rumień na twarzy, nosie, dekolcie — zamykane punktowo wiązką lasera.</p>
         </div>
         <div class="svc-toggle">+</div>
       </summary>
       <div class="svc-body">
         <div class="svc-desc">
-          <div><h4>Na czym polega</h4><p>Wiązka lasera jest pochłaniana przez hemoglobinę w naczynku — podgrzewa je i obkurcza, a organizm stopniowo je wchłania.</p></div>
+          <div><h4>Na czym polega</h4><p>Technologia E-Light (światło + fala RF) jest pochłaniana przez hemoglobinę w naczynku — podgrzewa je i obkurcza, a organizm stopniowo je wchłania.</p></div>
           <div><h4>Jak przebiega</h4><p>Zabieg punktowy, trwa od kilkunastu do kilkudziesięciu minut. Po zabiegu nakładamy łagodzącą maskę (w cenie, tam gdzie oznaczono).</p></div>
           <div><h4>Efekty</h4><p>Redukcja widocznych naczynek i rumienia, wyrównany koloryt. Zwykle wystarczą 1–3 zabiegi w odstępach ok. 4 tygodni.</p></div>
         </div>
@@ -470,14 +476,14 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
     <details class="svc rv">
       <summary>
         <div class="svc-t">
-          <h3>Usuwanie przebarwień</h3>
+          <h3>Usuwanie przebarwień <span class="tech">E-Light</span></h3>
           <p>Plamy posłoneczne, przebarwienia po lecie i z wiekiem — rozjaśniane światłem, dla równego kolorytu.</p>
         </div>
         <div class="svc-toggle">+</div>
       </summary>
       <div class="svc-body">
         <div class="svc-desc">
-          <div><h4>Na czym polega</h4><p>Impuls światła rozbija skupiska melaniny odpowiedzialne za ciemne plamy. Przebarwienie chwilowo ciemnieje, a następnie naturalnie się złuszcza.</p></div>
+          <div><h4>Na czym polega</h4><p>Impuls E-Light rozbija skupiska melaniny odpowiedzialne za ciemne plamy. Przebarwienie chwilowo ciemnieje, a następnie naturalnie się złuszcza.</p></div>
           <div><h4>Jak przebiega</h4><p>Krótki zabieg punktowy. Przez kilka dni miejsce wygląda jak przyciemniona plamka — potem schodzi, odsłaniając jaśniejszą skórę.</p></div>
           <div><h4>Efekty</h4><p>Wyrównany, świeży koloryt skóry. Zwykle 1–3 zabiegi; najlepszy okres to jesień i zima, gdy słońce nie operuje mocno.</p></div>
         </div>
@@ -501,16 +507,16 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
     <details class="svc rv">
       <summary>
         <div class="svc-t">
-          <h3>Fotoodmładzanie światłem szerokopasmowym</h3>
-          <p>Impulsy światła pobudzają skórę do produkcji kolagenu — więcej jędrności, mniej zmęczonego wyglądu.</p>
+          <h3>Fotoodmładzanie światłem szerokopasmowym <span class="tech">SSR</span></h3>
+          <p>Efekt skóry jak z filtrem — wyrównany koloryt, mniej przebarwień i rumienia, przy okazji lepsze napięcie skóry.</p>
         </div>
         <div class="svc-toggle">+</div>
       </summary>
       <div class="svc-body">
         <div class="svc-desc">
-          <div><h4>Na czym polega</h4><p>Szerokopasmowe światło ogrzewa głębsze warstwy skóry i stymuluje fibroblasty do odbudowy kolagenu — naturalnego "rusztowania" skóry.</p></div>
+          <div><h4>Na czym polega</h4><p>Technologia SSR — szerokopasmowe światło ogrzewa skórę i wyrównuje jej koloryt, jednocześnie stymulując produkcję kolagenu.</p></div>
           <div><h4>Jak przebiega</h4><p>Przyjemne, ciepłe impulsy na oczyszczonej skórze. Bez okresu rekonwalescencji — od razu wracasz do codzienności.</p></div>
-          <div><h4>Efekty</h4><p>Poprawa napięcia i gęstości skóry, spłycenie drobnych zmarszczek, zdrowszy koloryt. Najlepsze efekty daje seria 3–5 zabiegów co 3–4 tygodnie.</p></div>
+          <div><h4>Efekty</h4><p>Wyrównuje koloryt, redukuje przebarwienia i rumień, pobudza produkcję kolagenu oraz poprawia napięcie i elastyczność skóry. Dzięki temu wygładza drobne zmarszczki, przywraca skórze blask i subtelnie poprawia owal twarzy.</p></div>
         </div>
         <div class="svc-prices">
           <div>
