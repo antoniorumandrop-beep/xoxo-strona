@@ -1,0 +1,542 @@
+---
+import { KATEGORIE, GODZINY_PRACY, REZERWACJE, STUDIO } from '../config.js';
+
+// Konfiguracja jedzie z serwera do przeglądarki — jedno źródło prawdy.
+const konfiguracja = {
+  godziny: GODZINY_PRACY,
+  bufor: REZERWACJE.bufor,
+  konsultacja: REZERWACJE.konsultacja,
+  minGodzin: REZERWACJE.minGodzin,
+  krokSlotu: REZERWACJE.krokSlotu,
+  maxDniNaprzod: REZERWACJE.maxDniNaprzod,
+  odwolanieGodzin: REZERWACJE.odwolanieGodzin,
+  adres: STUDIO.adres,
+  telefon: STUDIO.telefon,
+  kategorie: KATEGORIE,
+};
+---
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rezerwacja — XOXO Beauty Lab</title>
+<meta name="description" content="Zarezerwuj wizytę w XOXO Beauty Lab w Złotoryi. Wybierz zabiegi, zobacz wolne terminy i zapisz się online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style is:global>
+:root{
+  --cream:#FAF3EC;--cream-deep:#F1E5D6;--ink:#1C1917;--ink-soft:#4A423B;
+  --gold:#A6864E;--gold-light:#C9AE7C;--line:rgba(166,134,78,.28);--alarm:#8B2E2E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;line-height:1.6;padding-bottom:140px}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;line-height:1.15}
+.wrap{max-width:900px;margin:0 auto;padding:0 22px}
+header{text-align:center;padding:44px 0 26px}
+header h1{font-size:clamp(1.9rem,5vw,2.8rem)}
+.eyebrow{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+header p{color:var(--ink-soft);max-width:520px;margin:14px auto 0;font-size:.95rem}
+.powrot{display:inline-block;margin-bottom:18px;color:var(--ink-soft);text-decoration:none;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;transition:color .2s}
+.powrot:hover{color:var(--gold)}
+
+/* STEPS */
+.stepbar{display:flex;gap:0;margin:26px 0 30px;border:1px solid var(--line)}
+.stepbar div{flex:1;text-align:center;padding:11px 6px;font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-soft);border-right:1px solid var(--line);transition:all .3s}
+.stepbar div:last-child{border-right:0}
+.stepbar div.act{background:var(--ink);color:var(--cream)}
+.stepbar div.done{background:var(--cream-deep);color:var(--gold)}
+
+.panel{display:none}
+.panel.on{display:block}
+
+/* CATEGORY */
+.cat{border:1px solid var(--line);background:#fff;margin-bottom:16px}
+.cat > summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;justify-content:space-between;
+  align-items:center;gap:14px}
+.cat > summary::-webkit-details-marker{display:none}
+.cat h3{font-size:1.15rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tech{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+  border:1px solid var(--gold);padding:3px 7px;font-weight:400}
+.cat .tog{width:30px;height:30px;border:1px solid var(--gold);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;transition:.3s}
+.cat[open] .tog{background:var(--gold);color:#fff;transform:rotate(45deg)}
+.cat-body{padding:0 22px 16px}
+
+/* SERVICE ROW */
+label.sv{display:flex;align-items:center;gap:14px;padding:12px 10px;cursor:pointer;
+  border-bottom:1px solid rgba(166,134,78,.14);transition:background .2s}
+label.sv:last-child{border-bottom:0}
+label.sv:hover{background:var(--cream)}
+label.sv input{appearance:none;width:19px;height:19px;border:1px solid var(--gold);flex-shrink:0;
+  position:relative;cursor:pointer;transition:.2s}
+label.sv input:checked{background:var(--gold)}
+label.sv input:checked:after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.sv-n{flex:1;font-size:.95rem}
+.sv-t{font-size:.78rem;color:var(--gold);white-space:nowrap;min-width:56px;text-align:right}
+.sv-p{font-family:'Playfair Display',serif;font-size:1.05rem;min-width:66px;text-align:right}
+
+/* SUMMARY BAR */
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--cream);
+  padding:14px 0;z-index:60;box-shadow:0 -6px 24px rgba(0,0,0,.14)}
+.bar-in{max-width:900px;margin:0 auto;padding:0 22px;display:flex;align-items:center;
+  justify-content:space-between;gap:16px;flex-wrap:wrap}
+.bar-info{font-size:.85rem}
+.bar-info b{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:500;display:block;margin-top:2px}
+.bar-info small{color:var(--gold-light);letter-spacing:.1em;text-transform:uppercase;font-size:.65rem}
+.btn{background:var(--gold);color:var(--ink);border:0;font-family:'Jost';font-size:.78rem;
+  letter-spacing:.15em;text-transform:uppercase;padding:14px 30px;cursor:pointer;transition:.25s}
+.btn:hover:not(:disabled){background:var(--gold-light)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1px solid var(--gold-light);color:var(--cream)}
+
+/* DATES */
+.days{display:flex;gap:9px;overflow-x:auto;padding:4px 0 14px;-webkit-overflow-scrolling:touch}
+.day{flex-shrink:0;border:1px solid var(--line);background:#fff;padding:12px 16px;text-align:center;
+  cursor:pointer;min-width:74px;transition:.2s}
+.day:hover{border-color:var(--gold)}
+.day.sel{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.day.off{opacity:.32;cursor:not-allowed}
+.day small{display:block;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.day.sel small{color:var(--gold-light)}
+.day b{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:500;display:block;margin:3px 0}
+.day span{font-size:.68rem;opacity:.7}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:9px;margin-top:8px;min-height:52px}
+.slot{border:1px solid var(--line);background:#fff;padding:12px 6px;text-align:center;cursor:pointer;
+  font-size:.92rem;transition:.2s;font-family:'Jost',sans-serif}
+.slot:hover{border-color:var(--gold);background:var(--cream)}
+.slot.sel{background:var(--gold);color:#fff;border-color:var(--gold)}
+.slot.taken{opacity:.28;cursor:not-allowed;text-decoration:line-through}
+.info{grid-column:1/-1;color:var(--ink-soft);font-size:.9rem;padding:6px 0}
+.info button{background:none;border:0;border-bottom:1px solid var(--gold);color:var(--gold);
+  font-family:'Jost',sans-serif;font-size:.9rem;cursor:pointer;padding:0;margin-left:6px}
+
+/* FORM */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px}
+.field input,.field textarea{width:100%;border:1px solid var(--line);background:#fff;padding:13px 14px;
+  font-family:'Jost';font-size:16px;color:var(--ink)}
+.field input:focus,.field textarea:focus{outline:0;border-color:var(--gold)}
+.field.zly input,.field.zly textarea{border-color:var(--alarm)}
+.field .blad{display:none;color:var(--alarm);font-size:.78rem;margin-top:5px}
+.field.zly .blad{display:block}
+.recap{background:var(--cream-deep);padding:24px;margin-bottom:22px}
+.recap h3{font-size:1.2rem;margin-bottom:14px}
+.recap-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:.9rem;
+  border-bottom:1px solid rgba(166,134,78,.18)}
+.recap-row:last-of-type{border-bottom:0}
+.recap-tot{display:flex;justify-content:space-between;margin-top:14px;padding-top:14px;
+  border-top:1px solid var(--gold);font-family:'Playfair Display',serif;font-size:1.3rem}
+.note{font-size:.78rem;color:var(--ink-soft);margin-top:10px}
+.sec-t{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:24px 0 10px}
+.done-box{text-align:center;padding:50px 20px 10px}
+.done-box .ok{width:66px;height:66px;border:1px solid var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:1.9rem;color:var(--gold)}
+.warn{background:#fff;border-left:3px solid var(--gold);padding:12px 16px;font-size:.82rem;
+  color:var(--ink-soft);margin-bottom:20px}
+.warn.zle{border-left-color:var(--alarm);color:var(--alarm)}
+.warn.zle a{color:var(--alarm)}
+@media(max-width:520px){
+  .bar-in{gap:10px}
+  .btn{padding:13px 20px;font-size:.72rem}
+  .sv-t{min-width:48px}
+  .sv-p{min-width:58px;font-size:1rem}
+  label.sv{gap:10px;padding:12px 4px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <a class="powrot" href="/">← Strona główna</a>
+    <div><span class="eyebrow">XOXO Beauty Lab</span></div>
+    <h1>Rezerwacja wizyty</h1>
+    <p>Wybierz zabiegi — od razu zobaczysz, ile potrwa wizyta i ile zapłacisz. Potem wystarczy wskazać termin.</p>
+  </header>
+
+  <div class="stepbar">
+    <div id="sb1" class="act">1 · Zabiegi</div>
+    <div id="sb2">2 · Termin</div>
+    <div id="sb3">3 · Dane</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="panel on" id="p1"></div>
+
+  <!-- STEP 2 -->
+  <div class="panel" id="p2">
+    <div class="warn" id="warn-termin">Pokazujemy tylko terminy, w które zmieści się cała Twoja wizyta.</div>
+    <div class="sec-t">Wybierz dzień</div>
+    <div class="days" id="days"></div>
+    <div class="sec-t">Wolne godziny</div>
+    <div class="slots" id="slots"></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="panel" id="p3">
+    <div class="recap" id="recap"></div>
+    <div class="warn zle" id="blad-ogolny" style="display:none"></div>
+    <div class="field" id="pole-imie"><label for="f-name">Imię i nazwisko</label><input id="f-name" name="name" autocomplete="name" placeholder="Anna Kowalska"><span class="blad"></span></div>
+    <div class="field" id="pole-telefon"><label for="f-tel">Telefon</label><input id="f-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="600 100 200"><span class="blad"></span></div>
+    <div class="field" id="pole-email"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="anna@example.com"><span class="blad"></span></div>
+    <div class="field" id="pole-uwagi"><label for="f-note">Uwagi (opcjonalnie)</label><textarea id="f-note" rows="3" placeholder="Np. pierwszy raz na depilacji"></textarea><span class="blad"></span></div>
+    <label class="sv" style="border:1px solid var(--line);padding:14px">
+      <input type="checkbox" id="f-first"><span class="sv-n">To moja pierwsza wizyta (doliczamy 10 min konsultacji)</span>
+    </label>
+  </div>
+
+  <!-- DONE -->
+  <div class="panel" id="p4">
+    <div class="done-box">
+      <div class="ok">✓</div>
+      <h1 style="font-size:1.9rem">Rezerwacja przyjęta</h1>
+      <p style="color:var(--ink-soft);margin-top:12px" id="done-sub">Potwierdzenie wyślemy na maila. Do zobaczenia!</p>
+    </div>
+    <div class="recap" id="done-recap"></div>
+    <p style="text-align:center"><a class="powrot" href="/">← Wróć na stronę główną</a></p>
+  </div>
+</div>
+
+<div class="bar" id="bar">
+  <div class="bar-in">
+    <div class="bar-info">
+      <small id="bar-lbl">Wybrano</small>
+      <b id="bar-val">— · 0 zł</b>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" id="back" style="display:none">Wstecz</button>
+      <button class="btn" id="next" disabled>Dalej</button>
+    </div>
+  </div>
+</div>
+
+<script id="konfiguracja" type="application/json" set:html={JSON.stringify(konfiguracja)}></script>
+
+<script is:inline>
+/* Konfiguracja przychodzi z src/config.js — nie duplikujemy jej tutaj. */
+const CFG = JSON.parse(document.getElementById('konfiguracja').textContent);
+const KAT = CFG.kategorie;
+
+let step = 1, wybrane = [], dzien = null, godz = null, wysylam = false;
+const WARN_DOMYSLNY = document.getElementById('warn-termin').innerHTML;
+let pobieranie = null;   // AbortController ostatniego zapytania o terminy
+
+/* ---- pomocnicze: daty bez pułapek strefowych ---- */
+function iso(d){
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+/* ---- build step 1 ---- */
+const p1 = document.getElementById('p1');
+KAT.forEach((k) => {
+  const d = document.createElement('details');
+  d.className = 'cat';
+  if (k.otwarta) d.open = true;
+  d.innerHTML = `<summary><h3>${k.nazwa} <span class="tech">${k.technologia}</span></h3><div class="tog">+</div></summary>
+   <div class="cat-body">${k.zabiegi.map((z) => `
+    <label class="sv"><input type="checkbox" data-id="${z.id}">
+      <span class="sv-n">${z.nazwa}</span><span class="sv-t">${z.czas} min</span>
+      <span class="sv-p">${z.cena} zł</span></label>`).join('')}</div>`;
+  p1.appendChild(d);
+});
+
+const ZABIEGI = new Map();
+KAT.forEach((k) => k.zabiegi.forEach((z) => ZABIEGI.set(z.id, { ...z, technologia: k.technologia })));
+
+p1.addEventListener('change', (e) => {
+  if (e.target.type !== 'checkbox') return;
+  const id = e.target.dataset.id;
+  if (e.target.checked) wybrane.push(ZABIEGI.get(id));
+  else wybrane = wybrane.filter((x) => x.id !== id);
+  odswiez();
+});
+
+function suma(){
+  const cena = wybrane.reduce((a,b) => a + b.cena, 0);
+  let czas = wybrane.reduce((a,b) => a + b.czas, 0);
+  if (document.getElementById('f-first').checked) czas += CFG.konsultacja;
+  return { cena, czas };
+}
+function fmtCzas(m){
+  const h = Math.floor(m/60), r = m%60;
+  return h ? (r ? `${h} h ${r} min` : `${h} h`) : `${m} min`;
+}
+function odswiez(){
+  const { cena, czas } = suma();
+  const n = wybrane.length;
+  document.getElementById('bar-lbl').textContent = n ? `${n} ${n===1?'zabieg':(n<5?'zabiegi':'zabiegów')} · ${fmtCzas(czas)}` : 'Wybrano';
+  document.getElementById('bar-val').textContent = n ? `${cena} zł` : '— · 0 zł';
+  document.getElementById('next').disabled = wysylam || (step===1 && n===0) || (step===2 && !godz);
+}
+document.getElementById('f-first').addEventListener('change', () => { odswiez(); if (step===2) rysujSloty(); });
+
+/* ---- dni ---- */
+function rysujDni(){
+  const box = document.getElementById('days');
+  box.innerHTML = '';
+  const dn = ['Nd','Pn','Wt','Śr','Cz','Pt','So'];
+  const ms = ['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'];
+  for (let i = 0; i <= CFG.maxDniNaprzod; i++){
+    const d = new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate() + i);
+    const wd = d.getDay(), open = CFG.godziny[wd];
+    const klucz = iso(d);
+    const el = document.createElement('div');
+    el.className = 'day' + (open ? '' : ' off') + (klucz === dzien ? ' sel' : '');
+    el.innerHTML = `<small>${dn[wd]}</small><b>${d.getDate()}</b><span>${ms[d.getMonth()]}</span>`;
+    if (open){
+      el.onclick = () => {
+        wyczyscBladTerminu();
+        dzien = klucz; godz = null;
+        [...box.children].forEach((c) => c.classList.remove('sel'));
+        el.classList.add('sel');
+        rysujSloty(); odswiez();
+      };
+    }
+    box.appendChild(el);
+  }
+}
+
+function pokazBladTerminu(tekst){
+  const el = document.getElementById('warn-termin');
+  el.innerHTML = tekst;
+  el.classList.add('zle');
+}
+function wyczyscBladTerminu(){
+  const el = document.getElementById('warn-termin');
+  if (!el.classList.contains('zle')) return;
+  el.innerHTML = WARN_DOMYSLNY;
+  el.classList.remove('zle');
+}
+
+function komunikatSlotow(html){
+  document.getElementById('slots').innerHTML = `<p class="info">${html}</p>`;
+}
+
+async function rysujSloty(){
+  const box = document.getElementById('slots');
+  godz = null;
+  odswiez();
+
+  if (!dzien){ komunikatSlotow('Najpierw wybierz dzień.'); return; }
+
+  const { czas } = suma();
+  if (!wybrane.length){ komunikatSlotow('Najpierw wybierz zabiegi.'); return; }
+
+  if (pobieranie) pobieranie.abort();
+  pobieranie = new AbortController();
+  const mojeZapytanie = pobieranie;
+
+  komunikatSlotow('Sprawdzam wolne godziny…');
+
+  let dane;
+  try {
+    const odp = await fetch(`/api/wolne-terminy?data=${dzien}&minuty=${czas}`, { signal: mojeZapytanie.signal });
+    dane = await odp.json();
+    if (!odp.ok) throw new Error(dane.komunikat || 'Nie udało się pobrać terminów.');
+  } catch (e) {
+    if (e.name === 'AbortError') return;
+    const powod = navigator.onLine === false
+      ? 'Brak połączenia z internetem.'
+      : (e.message || 'Nie udało się pobrać terminów.');
+    komunikatSlotow(`${powod} <button type="button" id="ponow">Spróbuj ponownie</button>`);
+    const b = document.getElementById('ponow');
+    if (b) b.onclick = () => rysujSloty();
+    return;
+  }
+
+  if (mojeZapytanie !== pobieranie) return;   // w międzyczasie poszło nowsze zapytanie
+
+  if (!dane.otwarte){
+    komunikatSlotow('Tego dnia studio jest zamknięte. Wybierz piątek, sobotę lub niedzielę.');
+    return;
+  }
+
+  const wolne = dane.sloty.filter((s) => s.wolny).length;
+  if (!wolne){
+    komunikatSlotow('Brak wolnych godzin tego dnia dla wybranych zabiegów. Spróbuj innego dnia.');
+    return;
+  }
+
+  box.innerHTML = '';
+  dane.sloty.forEach((s) => {
+    const el = document.createElement('div');
+    el.className = 'slot' + (s.wolny ? '' : ' taken');
+    el.textContent = s.godzina;
+    if (s.wolny){
+      el.onclick = () => {
+        wyczyscBladTerminu();
+        godz = s.godzina;
+        [...box.children].forEach((x) => x.classList.remove('sel'));
+        el.classList.add('sel');
+        odswiez();
+      };
+    }
+    box.appendChild(el);
+  });
+}
+
+/* ---- recap ---- */
+const DNI_PELNE = ['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'];
+function opisDnia(dataISO){
+  const [r,m,d] = dataISO.split('-').map(Number);
+  const wd = new Date(Date.UTC(r, m-1, d)).getUTCDay();
+  return `${DNI_PELNE[wd]}, ${d}.${String(m).padStart(2,'0')}`;
+}
+function koniecWizyty(){
+  const { czas } = suma();
+  const [h,m] = godz.split(':').map(Number);
+  const t = h*60 + m + czas;
+  return String(Math.floor(t/60)).padStart(2,'0') + ':' + String(t%60).padStart(2,'0');
+}
+function wierszeZabiegow(){
+  return wybrane.map((w) => `<div class="recap-row"><span>${w.nazwa} <small style="color:var(--gold)">${w.technologia}</small></span><span>${w.czas} min · ${w.cena} zł</span></div>`).join('');
+}
+function rysujRecap(){
+  const { cena, czas } = suma();
+  document.getElementById('recap').innerHTML =
+   `<h3>Twoja wizyta</h3>
+    <div class="recap-row"><span>${opisDnia(dzien)}</span><b>${godz} – ${koniecWizyty()}</b></div>
+    ${wierszeZabiegow()}
+    ${document.getElementById('f-first').checked ? `<div class="recap-row"><span>Konsultacja (pierwsza wizyta)</span><span>${CFG.konsultacja} min · gratis</span></div>` : ''}
+    <div class="recap-tot"><span>${fmtCzas(czas)}</span><span>${cena} zł</span></div>
+    <p class="note">Płatność na miejscu. Termin możesz odwołać do ${CFG.odwolanieGodzin} h przed wizytą.</p>`;
+}
+
+/* ---- błędy formularza ---- */
+const POLA = { imie:'pole-imie', telefon:'pole-telefon', email:'pole-email', uwagi:'pole-uwagi' };
+function wyczyscBledy(){
+  Object.values(POLA).forEach((id) => document.getElementById(id).classList.remove('zly'));
+  const og = document.getElementById('blad-ogolny');
+  og.style.display = 'none'; og.textContent = '';
+}
+function pokazBledyPol(pola){
+  Object.entries(pola || {}).forEach(([klucz, tekst]) => {
+    const el = document.getElementById(POLA[klucz]);
+    if (el){ el.classList.add('zly'); el.querySelector('.blad').textContent = tekst; }
+  });
+}
+function pokazBlad(tekst){
+  const og = document.getElementById('blad-ogolny');
+  og.innerHTML = tekst;
+  og.style.display = 'block';
+  og.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+/* ---- nav ---- */
+const next = document.getElementById('next'), back = document.getElementById('back');
+function idz(n){
+  step = n;
+  [1,2,3,4].forEach((i) => document.getElementById('p'+i).classList.toggle('on', i===n));
+  [1,2,3].forEach((i) => {
+    const el = document.getElementById('sb'+i);
+    el.className = i===n ? 'act' : (i<n ? 'done' : '');
+  });
+  back.style.display = (n>1 && n<4) ? 'block' : 'none';
+  next.style.display = n<4 ? 'block' : 'none';
+  next.textContent = n===3 ? 'Rezerwuję' : 'Dalej';
+  if (n===2){ rysujDni(); rysujSloty(); }
+  if (n===3) rysujRecap();
+  if (n===4) document.getElementById('bar').style.display = 'none';
+  window.scrollTo({ top:0, behavior:'smooth' });
+  odswiez();
+}
+
+async function wyslij(){
+  wyczyscBledy();
+
+  const imie = document.getElementById('f-name').value.trim();
+  const telefon = document.getElementById('f-tel').value.trim();
+  const email = document.getElementById('f-mail').value.trim();
+  const uwagi = document.getElementById('f-note').value.trim();
+  const pierwszaWizyta = document.getElementById('f-first').checked;
+
+  const bledy = {};
+  if (imie.length < 3 || !imie.includes(' ')) bledy.imie = 'Podaj imię i nazwisko.';
+  if (telefon.replace(/\D/g,'').length < 9) bledy.telefon = 'Podaj numer telefonu (np. 600 100 200).';
+  if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) bledy.email = 'Podaj adres e-mail, na który wyślemy potwierdzenie.';
+  if (Object.keys(bledy).length){
+    pokazBledyPol(bledy);
+    document.getElementById(POLA[Object.keys(bledy)[0]]).scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  wysylam = true;
+  next.disabled = true;
+  next.textContent = 'Wysyłam…';
+
+  let odp, dane;
+  try {
+    odp = await fetch('/api/rezerwuj', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        data: dzien, godzina: godz,
+        zabiegi: wybrane.map((w) => w.id),
+        pierwszaWizyta, imie, telefon, email, uwagi,
+      }),
+    });
+    dane = await odp.json();
+  } catch {
+    wysylam = false; next.disabled = false; next.textContent = 'Rezerwuję';
+    pokazBlad(navigator.onLine === false
+      ? 'Brak połączenia z internetem. Sprawdź sieć i spróbuj jeszcze raz.'
+      : `Nie udało się wysłać rezerwacji. Spróbuj jeszcze raz albo zadzwoń: <a href="tel:${CFG.telefon.replace(/\s/g,'')}">${CFG.telefon}</a>.`);
+    return;
+  }
+
+  wysylam = false; next.disabled = false; next.textContent = 'Rezerwuję';
+
+  if (odp.ok && dane.ok){
+    pokazPodsumowanie(dane);
+    idz(4);
+    return;
+  }
+
+  if (dane.blad === 'ZAJETY'){
+    idz(2);                       // idz(2) samo odświeża listę godzin
+    pokazBladTerminu(dane.komunikat);
+    return;
+  }
+  if (dane.blad === 'DANE'){
+    pokazBledyPol(dane.pola);
+    pokazBlad(dane.komunikat || 'Sprawdź dane w formularzu.');
+    return;
+  }
+  pokazBlad(`${dane.komunikat || 'Coś poszło nie tak.'} Możesz też zadzwonić: <a href="tel:${CFG.telefon.replace(/\s/g,'')}">${CFG.telefon}</a>.`);
+}
+
+function pokazPodsumowanie(dane){
+  const r = dane.rezerwacja;
+  const zabiegi = r.zabiegi.map((z) =>
+    `<div class="recap-row"><span>${z.nazwa} <small style="color:var(--gold)">${z.technologia}</small></span><span>${z.czas} min · ${z.cena} zł</span></div>`).join('');
+  document.getElementById('done-recap').innerHTML =
+   `<h3>Twoja wizyta</h3>
+    <div class="recap-row"><span>${opisDnia(r.data)}</span><b>${r.godzina} – ${r.koniec}</b></div>
+    ${zabiegi}
+    ${r.pierwszaWizyta ? `<div class="recap-row"><span>Konsultacja (pierwsza wizyta)</span><span>${CFG.konsultacja} min · gratis</span></div>` : ''}
+    <div class="recap-tot"><span>${fmtCzas(r.czas)}</span><span>${r.cena} zł</span></div>
+    <p class="note">${CFG.adres}<br>Płatność na miejscu. Termin możesz odwołać do ${CFG.odwolanieGodzin} h przed wizytą — tel. ${CFG.telefon}.</p>`;
+
+  if (!dane.mailWyslany){
+    document.getElementById('done-sub').innerHTML =
+      'Termin jest zapisany. Maila z potwierdzeniem nie udało się wysłać — szczegóły masz poniżej.';
+  }
+}
+
+next.onclick = () => {
+  if (step===1) idz(2);
+  else if (step===2){ if (godz) idz(3); }
+  else if (step===3){ if (!wysylam) wyslij(); }
+};
+back.onclick = () => idz(step-1);
+
+idz(1);
+</script>
+</body>
+</html>
