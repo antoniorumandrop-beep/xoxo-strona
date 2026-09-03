@@ -22,6 +22,21 @@ const konfiguracja = {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rezerwacja — XOXO Beauty Lab</title>
 <meta name="description" content="Zarezerwuj wizytę w XOXO Beauty Lab w Złotoryi. Wybierz zabiegi, zobacz wolne terminy i zapisz się online.">
+<link rel="canonical" href="https://www.xoxobeautylab.pl/rezerwacja">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#FAF3EC">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XOXO Beauty Lab">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:title" content="Rezerwacja wizyty — XOXO Beauty Lab">
+<meta property="og:description" content="Zarezerwuj wizytę w XOXO Beauty Lab w Złotoryi. Wybierz zabiegi, zobacz wolne terminy i zapisz się online.">
+<meta property="og:url" content="https://www.xoxobeautylab.pl/rezerwacja">
+<meta property="og:image" content="https://www.xoxobeautylab.pl/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -58,7 +73,7 @@ header p{color:var(--ink-soft);max-width:520px;margin:14px auto 0;font-size:.95r
 .cat > summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;justify-content:space-between;
   align-items:center;gap:14px}
 .cat > summary::-webkit-details-marker{display:none}
-.cat h3{font-size:1.15rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cat h2{font-size:1.15rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .tech{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
   border:1px solid var(--gold);padding:3px 7px;font-weight:400}
 .cat .tog{width:30px;height:30px;border:1px solid var(--gold);color:var(--gold);
@@ -195,7 +210,7 @@ label.sv input:checked:after{content:"";position:absolute;left:6px;top:2px;width
   <div class="panel" id="p4">
     <div class="done-box">
       <div class="ok">✓</div>
-      <h1 style="font-size:1.9rem">Rezerwacja przyjęta</h1>
+      <h2 style="font-size:1.9rem">Rezerwacja przyjęta</h2>
       <p style="color:var(--ink-soft);margin-top:12px" id="done-sub">Potwierdzenie wyślemy na maila. Do zobaczenia!</p>
     </div>
     <div class="recap" id="done-recap"></div>
@@ -238,7 +253,7 @@ KAT.forEach((k) => {
   const d = document.createElement('details');
   d.className = 'cat';
   if (k.otwarta) d.open = true;
-  d.innerHTML = `<summary><h3>${k.nazwa} <span class="tech">${k.technologia}</span></h3><div class="tog">+</div></summary>
+  d.innerHTML = `<summary><h2>${k.nazwa} <span class="tech">${k.technologia}</span></h2><div class="tog">+</div></summary>
    <div class="cat-body">${k.zabiegi.map((z) => `
     <label class="sv"><input type="checkbox" data-id="${z.id}">
       <span class="sv-n">${z.nazwa}</span><span class="sv-t">${z.czas} min</span>
@@ -274,7 +289,11 @@ function odswiez(){
   document.getElementById('bar-val').textContent = n ? `${cena} zł` : '— · 0 zł';
   document.getElementById('next').disabled = wysylam || (step===1 && n===0) || (step===2 && !godz);
 }
-document.getElementById('f-first').addEventListener('change', () => { odswiez(); if (step===2) rysujSloty(); });
+document.getElementById('f-first').addEventListener('change', () => {
+  odswiez();
+  if (step === 2) rysujSloty();
+  if (step === 3) rysujRecap();   // konsultacja wydłuża wizytę — podsumowanie musi to pokazać
+});
 
 /* ---- dni ---- */
 function rysujDni(){
