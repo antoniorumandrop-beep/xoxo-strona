@@ -9,7 +9,9 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^5.13.0",
-    "@astrojs/vercel": "^8.2.7"
+    "@astrojs/vercel": "^8.2.7",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "astro": "^5.13.0"
   }
 }

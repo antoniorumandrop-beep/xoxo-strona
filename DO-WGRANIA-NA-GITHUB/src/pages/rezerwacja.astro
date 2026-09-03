@@ -1,4 +1,6 @@
 ---
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import { KATEGORIE, GODZINY_PRACY, REZERWACJE, STUDIO } from '../config.js';
 
 // Konfiguracja jedzie z serwera do przeglądarki — jedno źródło prawdy.
@@ -557,5 +559,9 @@ back.onclick = () => idz(step-1);
 
 idz(1);
 </script>
+
+<!-- licznik odwiedzin + pomiar szybkosci (Vercel, bez ciasteczek) -->
+<Analytics />
+<SpeedInsights />
 </body>
 </html>

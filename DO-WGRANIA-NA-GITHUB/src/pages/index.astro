@@ -1,4 +1,6 @@
 ---
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 /* ── SEO ─────────────────────────────────────────────────────────────────
    Dane strukturalne budujemy z tego samego cennika, z ktorego dziala
    rezerwacja (src/config.js). Dzieki temu ceny i godziny pokazywane
@@ -890,5 +892,9 @@ const jio = new IntersectionObserver((es)=>{
 },{threshold:.3});
 if(stepsWrap) jio.observe(stepsWrap);
 </script>
+
+<!-- licznik odwiedzin + pomiar szybkosci (Vercel, bez ciasteczek) -->
+<Analytics />
+<SpeedInsights />
 </body>
 </html>
