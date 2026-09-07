@@ -1,0 +1,117 @@
+---
+import { STUDIO, REZERWACJE } from '../config.js';
+const TYTUL = `Polityka prywatności — ${STUDIO.nazwa}`;
+---
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{TYTUL}</title>
+<meta name="description" content="Jak XOXO Beauty Lab przetwarza dane osobowe podane przy rezerwacji wizyty online.">
+<link rel="canonical" href={`${STUDIO.www}/polityka-prywatnosci`}>
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#FAF3EC">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style is:global>
+:root{--cream:#FAF3EC;--cream-deep:#F1E5D6;--ink:#1C1917;--ink-soft:#4A423B;--gold:#A6864E;--line:rgba(166,134,78,.28)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;padding:0 0 70px}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+header{text-align:center;padding:46px 0 12px}
+h1{font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(1.7rem,4.5vw,2.4rem);line-height:1.15}
+h2{font-family:'Playfair Display',serif;font-weight:500;font-size:1.25rem;margin:34px 0 10px}
+.eyebrow{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+p,li{color:var(--ink-soft);font-size:.95rem}
+p{margin-bottom:12px}
+ul{margin:0 0 12px 20px}
+li{margin-bottom:6px}
+a{color:var(--gold)}
+.data{font-size:.78rem;color:var(--ink-soft);text-align:center;margin-top:6px}
+.powrot{display:inline-block;margin:34px 0 0;color:var(--ink-soft);text-decoration:none;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+.powrot:hover{color:var(--gold)}
+.ramka{background:var(--cream-deep);padding:20px 22px;margin:20px 0}
+.ramka p:last-child{margin-bottom:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">{STUDIO.nazwa}</span>
+    <h1>Polityka prywatności</h1>
+    <p class="data">Dotyczy rezerwacji wizyt przez stronę {STUDIO.domena}</p>
+  </header>
+
+  <h2>Kto odpowiada za Twoje dane</h2>
+  <p>Administratorem danych jest <strong>{STUDIO.nazwa}</strong>, {STUDIO.adres}.
+    W sprawach dotyczących danych osobowych napisz na
+    <a href={`mailto:${STUDIO.email}`}>{STUDIO.email}</a> lub zadzwoń pod
+    <a href={`tel:${STUDIO.telefony[0]}`}>{STUDIO.telefon}</a>.</p>
+
+  <h2>Jakie dane zbieramy</h2>
+  <p>Wyłącznie te, które sama podajesz w formularzu rezerwacji:</p>
+  <ul>
+    <li>imię i nazwisko,</li>
+    <li>numer telefonu,</li>
+    <li>adres e-mail,</li>
+    <li>uwagi do wizyty — jeśli zdecydujesz się je wpisać,</li>
+    <li>informację, czy to Twoja pierwsza wizyta,</li>
+    <li>wybrane zabiegi oraz termin.</li>
+  </ul>
+  <p>Nie prosimy o żadne dane o zdrowiu przez formularz. Informacje o
+    przeciwwskazaniach omawiamy osobiście, na konsultacji w studiu.</p>
+
+  <h2>Po co ich używamy</h2>
+  <p>Żeby zarezerwować i przeprowadzić Twoją wizytę: zapisać termin w kalendarzu
+    studia, wysłać Ci potwierdzenie oraz skontaktować się z Tobą, gdyby coś
+    wymagało uzgodnienia. Podstawą prawną jest podjęcie działań na Twoje żądanie
+    przed zawarciem umowy i jej wykonanie (art. 6 ust. 1 lit. b RODO), a w zakresie
+    kontaktu telefonicznego — nasz uzasadniony interes (art. 6 ust. 1 lit. f RODO).</p>
+  <p>Podanie danych jest dobrowolne, ale bez nich nie zarezerwujemy wizyty.</p>
+
+  <h2>Komu je przekazujemy</h2>
+  <p>Korzystamy z trzech usług, które przetwarzają dane w naszym imieniu:</p>
+  <ul>
+    <li><strong>Google</strong> — kalendarz, w którym zapisujemy termin wizyty,</li>
+    <li><strong>Resend</strong> — wysyłka maili z potwierdzeniem (serwery w Irlandii),</li>
+    <li><strong>Vercel</strong> — hosting strony.</li>
+  </ul>
+  <p>Nie sprzedajemy danych i nie przekazujemy ich nikomu w celach marketingowych.</p>
+
+  <h2>Jak długo je trzymamy</h2>
+  <p>Dane rezerwacji przechowujemy w kalendarzu przez czas potrzebny do obsługi
+    wizyty i prowadzenia historii zabiegów, a następnie tak długo, jak wymagają
+    tego przepisy o rachunkowości i terminy przedawnienia roszczeń. Możesz
+    w każdej chwili poprosić o usunięcie danych.</p>
+
+  <h2>Ciasteczka i statystyki</h2>
+  <div class="ramka">
+    <p><strong>Ta strona nie używa ciasteczek</strong> ani innych znaczników
+      zapisywanych w Twojej przeglądarce. Dlatego nie zobaczysz tu okienka
+      ze zgodą na ciasteczka — nie ma na co jej wyrażać.</p>
+    <p>Liczymy odwiedziny narzędziem Vercel Analytics, które działa bez ciasteczek
+      i nie zbiera danych pozwalających Cię zidentyfikować. Widzimy wyłącznie
+      zbiorcze liczby: ile osób odwiedziło stronę i które podstrony oglądały.</p>
+  </div>
+
+  <h2>Twoje prawa</h2>
+  <p>Masz prawo dostępu do swoich danych, ich sprostowania, usunięcia,
+    ograniczenia przetwarzania, przeniesienia oraz wniesienia sprzeciwu.
+    Wystarczy napisać na <a href={`mailto:${STUDIO.email}`}>{STUDIO.email}</a>.
+    Jeśli uznasz, że przetwarzamy dane niezgodnie z prawem, możesz złożyć skargę
+    do Prezesa Urzędu Ochrony Danych Osobowych.</p>
+
+  <h2>Odwołanie wizyty</h2>
+  <p>Termin możesz odwołać lub przełożyć do {REZERWACJE.odwolanieGodzin} godzin
+    przed wizytą — telefonicznie pod <a href={`tel:${STUDIO.telefony[0]}`}>{STUDIO.telefon}</a>.</p>
+
+  <p><a class="powrot" href="/">← Strona główna</a></p>
+</div>
+</body>
+</html>

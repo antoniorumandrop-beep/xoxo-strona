@@ -6,26 +6,17 @@ import SpeedInsights from '@vercel/speed-insights/astro';
    rezerwacja (src/config.js). Dzieki temu ceny i godziny pokazywane
    w Google nigdy nie rozjada sie z tym, co widzi klientka.
    ──────────────────────────────────────────────────────────────────────── */
-import { KATEGORIE, GODZINY_PRACY } from '../config.js';
+import { KATEGORIE, GODZINY_PRACY, STUDIO } from '../config.js';
 
-const WITRYNA = 'https://www.xoxobeautylab.pl';
-const TYTUL = 'XOXO Beauty Lab \u2014 Depilacja laserowa Z\u0142otoryja';
+const WITRYNA = STUDIO.www;
+const TYTUL = 'XOXO Beauty Lab — Depilacja laserowa Złotoryja';
 const odCeny = Math.min(...KATEGORIE.find((k) => k.id === 'depilacja').zabiegi.map((z) => z.cena));
-const OPIS = `Depilacja laserowa w Z\u0142otoryi \u2014 trwa\u0142e usuwanie ow\u0142osienia dla kobiet i m\u0119\u017cczyzn. Ceny od ${odCeny} z\u0142, bezp\u0142atna konsultacja. Zapisz si\u0119 online.`;
+const OPIS = `Depilacja laserowa w Złotoryi — trwałe usuwanie owłosienia dla kobiet i mężczyzn. Ceny od ${odCeny} zł, bezpłatna konsultacja. Zapisz się online.`;
 
-/* NAP \u2014 jedno zrodlo dla stopki, schema.org i meta tagow */
-const NAP = {
-  nazwa: 'XOXO Beauty Lab',
-  ulica: 'ul. Cmentarna 28',
-  kod: '59-500',
-  miasto: 'Z\u0142otoryja',
-  telefony: ['+48697061471', '+48695369875'],
-  mail: 'xoxo.beautylabb@gmail.com',
-  instagram: 'https://www.instagram.com/xoxo_beautylab',
-  mapa: 'https://maps.google.com/?q=Cmentarna+28,+59-500+Z%C5%82otoryja',
-};
+/* Dane firmy pochodzą wyłącznie z src/config.js — nie duplikujemy ich tutaj. */
+const NAP = STUDIO;
 
-/* Pytania i odpowiedzi \u2014 renderuja sie NA STRONIE i w schema FAQPage
+/* Pytania i odpowiedzi — renderuja sie NA STRONIE i w schema FAQPage
    z tej samej tablicy, wiec nie moga sie rozjechac. */
 const FAQ = [
   {
@@ -63,10 +54,10 @@ const FAQ = [
 ];
 
 const OPISY_USLUG = {
-  depilacja: 'Trwa\u0142e usuwanie ow\u0142osienia laserem w technologii SHR \u2014 dla kobiet i m\u0119\u017cczyzn, na twarzy i ciele.',
-  naczynka: 'Zamykanie p\u0119kni\u0119tych naczynek i rumienia \u015bwiat\u0142em E-Light, na twarzy, szyi i dekolcie.',
-  przebarwienia: 'Rozja\u015bnianie plam posl\u0142onecznych i przebarwie\u0144 hormonalnych \u015bwiat\u0142em E-Light.',
-  fotoodmladzanie: 'Fotoodm\u0142adzanie \u015bwiat\u0142em szerokopasmowym SSR \u2014 poprawa kolorytu, napi\u0119cia i struktury sk\u00f3ry.',
+  depilacja: 'Trwałe usuwanie owłosienia laserem w technologii SHR — dla kobiet i mężczyzn, na twarzy i ciele.',
+  naczynka: 'Zamykanie pękniętych naczynek i rumienia światłem E-Light, na twarzy, szyi i dekolcie.',
+  przebarwienia: 'Rozjaśnianie plam poslłonecznych i przebarwień hormonalnych światłem E-Light.',
+  fotoodmladzanie: 'Fotoodmładzanie światłem szerokopasmowym SSR — poprawa kolorytu, napięcia i struktury skóry.',
 };
 
 const DNI_ANG = { 0:'Sunday', 1:'Monday', 2:'Tuesday', 3:'Wednesday', 4:'Thursday', 5:'Friday', 6:'Saturday' };
@@ -82,7 +73,7 @@ const godzinyOtwarcia = Object.entries(GODZINY_PRACY)
   }));
 
 const wszystkieCeny = KATEGORIE.flatMap((k) => k.zabiegi.map((z) => z.cena));
-const widelkiCen = `${Math.min(...wszystkieCeny)}\u2013${Math.max(...wszystkieCeny)} z\u0142`;
+const widelkiCen = `${Math.min(...wszystkieCeny)}–${Math.max(...wszystkieCeny)} zł`;
 
 const studio = {
   '@type': 'BeautySalon',
@@ -93,27 +84,27 @@ const studio = {
   image: `${WITRYNA}/og.jpg`,
   logo: `${WITRYNA}/logo.png`,
   telephone: NAP.telefony[0],
-  email: NAP.mail,
+  email: NAP.email,
   address: {
     '@type': 'PostalAddress',
     streetAddress: NAP.ulica,
     postalCode: NAP.kod,
     addressLocality: NAP.miasto,
-    addressRegion: 'dolno\u015bl\u0105skie',
-    addressCountry: 'PL',
+    addressRegion: STUDIO.wojewodztwo,
+    addressCountry: STUDIO.kraj,
   },
-  geo: { '@type': 'GeoCoordinates', latitude: 51.1314614, longitude: 15.9279347 },
+  geo: { '@type': 'GeoCoordinates', latitude: STUDIO.geo.szerokosc, longitude: STUDIO.geo.dlugosc },
   hasMap: NAP.mapa,
   areaServed: [
-    { '@type': 'City', name: 'Z\u0142otoryja' },
-    { '@type': 'AdministrativeArea', name: 'powiat z\u0142otoryjski' },
+    { '@type': 'City', name: STUDIO.miasto },
+    { '@type': 'AdministrativeArea', name: 'powiat złotoryjski' },
     { '@type': 'City', name: 'Legnica' },
     { '@type': 'City', name: 'Jawor' },
-    { '@type': 'City', name: 'Chojn\u00f3w' },
+    { '@type': 'City', name: 'Chojnów' },
   ],
   knowsAbout: [
     'depilacja laserowa', 'depilacja SHR', 'zamykanie naczynek',
-    'usuwanie przebarwie\u0144', 'fotoodm\u0142adzanie',
+    'usuwanie przebarwień', 'fotoodmładzanie',
   ],
   openingHoursSpecification: godzinyOtwarcia,
   priceRange: widelkiCen,
@@ -121,8 +112,8 @@ const studio = {
   knowsLanguage: 'pl',
   sameAs: [NAP.instagram],
   founder: [
-    { '@type': 'Person', name: 'Oliwia Bogu\u015b' },
-    { '@type': 'Person', name: 'Ilona Bogu\u015b' },
+    { '@type': 'Person', name: 'Oliwia Boguś' },
+    { '@type': 'Person', name: 'Ilona Boguś' },
   ],
   potentialAction: {
     '@type': 'ReserveAction',
@@ -147,7 +138,7 @@ const uslugi = KATEGORIE.map((k) => ({
   serviceType: k.nazwa,
   description: OPISY_USLUG[k.id],
   provider: { '@id': `${WITRYNA}/#studio` },
-  areaServed: { '@type': 'City', name: 'Z\u0142otoryja' },
+  areaServed: { '@type': 'City', name: 'Złotoryja' },
   availableChannel: {
     '@type': 'ServiceChannel',
     serviceUrl: `${WITRYNA}/rezerwacja`,
@@ -155,7 +146,7 @@ const uslugi = KATEGORIE.map((k) => ({
   },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: `${k.nazwa} \u2014 cennik`,
+    name: `${k.nazwa} — cennik`,
     itemListElement: k.zabiegi.map((z) => ({
       '@type': 'Offer',
       name: z.nazwa,
@@ -165,7 +156,7 @@ const uslugi = KATEGORIE.map((k) => ({
       url: `${WITRYNA}/rezerwacja`,
       itemOffered: {
         '@type': 'Service',
-        name: `${z.nazwa} \u2014 ${k.nazwa}`,
+        name: `${z.nazwa} — ${k.nazwa}`,
         provider: { '@id': `${WITRYNA}/#studio` },
         additionalProperty: {
           '@type': 'PropertyValue',
@@ -347,7 +338,7 @@ section{padding:88px 0}
   margin:0 auto;max-width:200px;
 }
 .rule span{flex:1;height:1px;background:var(--line)}
-.rule svg{width:11px;fill:var(--gold);flex-shrink:0}
+.rule svg{width:11px;height:11px;fill:var(--gold);flex-shrink:0}
 
 /* ---------- SIGNATURE: ŚCIEŻKA ZABIEGÓW ---------- */
 .journey{background:var(--cream-deep);}
@@ -506,11 +497,6 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
 .svc-prices{display:grid;grid-template-columns:1fr 1fr;gap:0 44px}
 @media(max-width:760px){.svc-prices{grid-template-columns:1fr}}
 .svc-note{margin-top:18px;font-size:.8rem;color:var(--gold);font-style:italic}
-.badge-main{
-  display:inline-block;background:var(--gold);color:var(--cream);
-  font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;
-  padding:4px 10px;margin-bottom:12px;
-}
 .ig-link{display:inline-flex;align-items:center;gap:9px;text-decoration:none}
 .ig-link svg{width:19px;height:19px}
 
@@ -608,7 +594,7 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
     <div class="sec-head rv">
       <span class="eyebrow">Cennik</span>
       <h2>Ceny za pojedynczy zabieg</h2>
-      <div class="rule" style="margin-top:22px"><span></span><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.8 12 21 12 21z"/></svg><span></span></div>
+      <div class="rule" style="margin-top:22px"><span></span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.8 12 21 12 21z"/></svg><span></span></div>
       <p>Ile kosztuje depilacja laserowa? Poniżej ceny za pojedynczy zabieg — bez pakietów i ukrytych dopłat. Płacisz na miejscu, po wizycie, a stawka nie zmienia się w trakcie serii.</p>
     </div>
 
@@ -837,7 +823,7 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
   <div class="wrap">
     <span class="eyebrow">Kontakt</span>
     <h2 style="font-size:clamp(1.9rem,4vw,2.9rem);margin-top:12px">Zapisz się już dziś</h2>
-    <div class="rule" style="margin-top:22px"><span></span><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.8 12 21 12 21z"/></svg><span></span></div>
+    <div class="rule" style="margin-top:22px"><span></span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s-8-5.2-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.8 12 21 12 21z"/></svg><span></span></div>
     <p style="max-width:520px;margin:26px auto 0;color:rgba(250,243,236,.75);font-size:.97rem">
       Wybierz wolny termin w naszym kalendarzu online — potwierdzenie
       i przypomnienie dostaniesz automatycznie na maila.
@@ -849,7 +835,7 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
       <a class="phone" href="tel:+48697061471"><small>Oliwia</small><span>697 061 471</span></a>
       <a class="phone" href="tel:+48695369875"><small>Ilona</small><span>695 369 875</span></a>
       <a class="phone" href="mailto:xoxo.beautylabb@gmail.com"><small>E-mail</small><span style="font-size:1.15rem">xoxo.beautylabb@gmail.com</span></a>
-      <a class="phone" href="https://www.instagram.com/xoxo_beautylab" target="_blank" rel="noopener"><small>Instagram</small><span style="font-size:1.15rem;display:inline-flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg>@xoxo_beautylab</span></a>
+      <a class="phone" href="https://www.instagram.com/xoxo_beautylab" target="_blank" rel="noopener"><small>Instagram</small><span style="font-size:1.15rem;display:inline-flex;align-items:center;gap:8px"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg>@xoxo_beautylab</span></a>
     </div>
     <div class="addr">
       ul. Cmentarna 28, 59-500 Złotoryja<br>
@@ -867,7 +853,7 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
 <footer>
   <div class="wrap foot-in">
     <span>© 2026 XOXO Beauty Lab — Depilacja laserowa, Złotoryja · xoxobeautylab.pl</span>
-    <span style="display:flex;gap:18px;align-items:center"><a href="https://www.instagram.com/xoxo_beautylab" target="_blank" rel="noopener" class="ig-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg></a><a href="#">Polityka prywatności</a></span>
+    <span style="display:flex;gap:18px;align-items:center"><a href="https://www.instagram.com/xoxo_beautylab" target="_blank" rel="noopener" class="ig-link" aria-label="XOXO Beauty Lab na Instagramie"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"/></svg></a><a href="/polityka-prywatnosci">Polityka prywatności</a></span>
   </div>
 </footer>
 

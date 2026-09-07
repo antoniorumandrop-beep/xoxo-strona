@@ -117,7 +117,7 @@ export function opisWydarzenia(w) {
   linie.push(`mail: ${w.email}`);
   if (w.uwagi) linie.push(`uwagi: ${w.uwagi}`);
   linie.push('');
-  linie.push(`Rezerwacja ze strony ${STUDIO.www.replace('https://', '')} · po wizycie doliczone ${REZERWACJE.bufor} min przerwy.`);
+  linie.push(`Rezerwacja ze strony ${STUDIO.domena} · po wizycie doliczone ${REZERWACJE.bufor} min przerwy.`);
   return linie.join('\n');
 }
 

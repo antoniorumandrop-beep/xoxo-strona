@@ -64,3 +64,19 @@ export async function GET({ url }) {
     }, 500);
   }
 }
+
+
+/* Kazda inna metoda HTTP dostaje czytelna odpowiedz 405 zamiast awarii funkcji. */
+export function ALL() {
+  return new Response(
+    JSON.stringify({ blad: 'METODA', komunikat: 'Nieobsługiwana metoda żądania.' }),
+    {
+      status: 405,
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        Allow: 'GET',
+        'Cache-Control': 'no-store',
+      },
+    }
+  );
+}

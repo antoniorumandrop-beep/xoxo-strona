@@ -4,14 +4,31 @@
    (i strona, i kalendarz, i maile). Nie ma tu żadnych haseł ani kluczy.
    ========================================================================= */
 
+/* Dane firmy (NAP: nazwa, adres, telefon). JEDYNE miejsce, w którym są zapisane
+   — korzysta z nich strona, dane strukturalne dla Google, maile i kalendarz.
+   Zmiana tutaj przechodzi wszędzie naraz, więc nic się nie rozjedzie. */
 export const STUDIO = {
   nazwa: 'XOXO Beauty Lab',
-  adres: 'ul. Cmentarna 28, 59-500 Złotoryja',
-  telefon: '+48 697 061 471',
-  www: 'https://xoxobeautylab.pl',
+  ulica: 'ul. Cmentarna 28',
+  kod: '59-500',
+  miasto: 'Złotoryja',
+  wojewodztwo: 'dolnośląskie',
+  kraj: 'PL',
+  /* telefony w formacie do klikania; pierwszy jest główny */
+  telefony: ['+48697061471', '+48695369875'],
+  email: 'xoxo.beautylabb@gmail.com',
+  www: 'https://www.xoxobeautylab.pl',
   instagram: 'https://www.instagram.com/xoxo_beautylab',
+  mapa: 'https://maps.google.com/?q=Cmentarna+28,+59-500+Z%C5%82otoryja',
+  /* współrzędne budynku, potwierdzone w OpenStreetMap */
+  geo: { szerokosc: 51.1314614, dlugosc: 15.9279347 },
   strefa: 'Europe/Warsaw',   // strefa czasowa studia — nie zmieniaj bez potrzeby
 };
+
+/* Gotowe formy do wyświetlania — składane z powyższych pól, nigdy wpisywane ręcznie. */
+STUDIO.adres = `${STUDIO.ulica}, ${STUDIO.kod} ${STUDIO.miasto}`;
+STUDIO.telefon = STUDIO.telefony[0].replace(/^(\+48)(\d{3})(\d{3})(\d{3})$/, '$1 $2 $3 $4');
+STUDIO.domena = STUDIO.www.replace(/^https?:\/\//, '');
 
 /* --- GODZINY PRACY ---------------------------------------------------------
    Klucz = dzień tygodnia: 0 = niedziela, 1 = poniedziałek ... 6 = sobota.

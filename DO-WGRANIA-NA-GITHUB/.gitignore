@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.vercel/
+.astro/
+
+# SEKRETY — nigdy nie commitujemy
+.env
+.env.local
+.env.*.local
+*.json.key
+service-account*.json
+
+.DS_Store

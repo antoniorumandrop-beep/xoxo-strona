@@ -53,7 +53,7 @@ ${srodek}
       ${bezpieczny(STUDIO.nazwa)} · ${bezpieczny(STUDIO.adres)}<br>
       <a href="tel:${bezpieczny(STUDIO.telefon.replace(/\s/g, ''))}" style="color:${ZLOTO};text-decoration:none;">${bezpieczny(STUDIO.telefon)}</a>
       &nbsp;·&nbsp;
-      <a href="${STUDIO.www}" style="color:${ZLOTO};text-decoration:none;">${bezpieczny(STUDIO.www.replace('https://', ''))}</a>
+      <a href="${STUDIO.www}" style="color:${ZLOTO};text-decoration:none;">${bezpieczny(STUDIO.domena)}</a>
     </td></tr>
   </table>
 </td></tr></table>

@@ -138,7 +138,12 @@ label.sv input:checked:after{content:"";position:absolute;left:6px;top:2px;width
   color:var(--gold);margin-bottom:6px}
 .field input,.field textarea{width:100%;border:1px solid var(--line);background:#fff;padding:13px 14px;
   font-family:'Jost';font-size:16px;color:var(--ink)}
-.field input:focus,.field textarea:focus{outline:0;border-color:var(--gold)}
+.field input:focus,.field textarea:focus{border-color:var(--gold)}
+/* Widoczne zaznaczenie przy obsłudze klawiaturą — bez niego nie widać,
+   gdzie się jest. Przy kliknięciu myszą obrys się nie pokazuje. */
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.day:focus-visible,.slot:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.field input:focus-visible,.field textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .field.zly input,.field.zly textarea{border-color:var(--alarm)}
 .field .blad{display:none;color:var(--alarm);font-size:.78rem;margin-top:5px}
 .field.zly .blad{display:block}
@@ -297,6 +302,30 @@ document.getElementById('f-first').addEventListener('change', () => {
   if (step === 3) rysujRecap();   // konsultacja wydłuża wizytę — podsumowanie musi to pokazać
 });
 
+/* Sprawia, że kafelek działa jak przycisk: da się do niego dojść tabulatorem
+   i wybrać go Enterem albo spacją. Wygląd pozostaje bez zmian. */
+function jakPrzycisk(el, etykieta, akcja){
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('aria-label', etykieta);
+  el.setAttribute('aria-pressed', 'false');
+  el.addEventListener('click', akcja);
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+      e.preventDefault();
+      akcja();
+    }
+  });
+}
+function zaznaczJeden(rodzic, wybrany){
+  [...rodzic.children].forEach((c) => {
+    c.classList.remove('sel');
+    if (c.hasAttribute('aria-pressed')) c.setAttribute('aria-pressed', 'false');
+  });
+  wybrany.classList.add('sel');
+  wybrany.setAttribute('aria-pressed', 'true');
+}
+
 /* ---- dni ---- */
 function rysujDni(){
   const box = document.getElementById('days');
@@ -310,14 +339,18 @@ function rysujDni(){
     const el = document.createElement('div');
     el.className = 'day' + (open ? '' : ' off') + (klucz === dzien ? ' sel' : '');
     el.innerHTML = `<small>${dn[wd]}</small><b>${d.getDate()}</b><span>${ms[d.getMonth()]}</span>`;
+    const opisDnia = `${DNI_PELNE[wd]} ${d.getDate()} ${MIESIACE_PELNE[d.getMonth()]}`;
     if (open){
-      el.onclick = () => {
+      jakPrzycisk(el, opisDnia, () => {
         wyczyscBladTerminu();
         dzien = klucz; godz = null;
-        [...box.children].forEach((c) => c.classList.remove('sel'));
-        el.classList.add('sel');
+        zaznaczJeden(box, el);
         rysujSloty(); odswiez();
-      };
+      });
+      if (klucz === dzien) el.setAttribute('aria-pressed', 'true');
+    } else {
+      el.setAttribute('aria-disabled', 'true');
+      el.setAttribute('aria-label', `${opisDnia} — studio zamknięte`);
     }
     box.appendChild(el);
   }
@@ -390,13 +423,15 @@ async function rysujSloty(){
     el.className = 'slot' + (s.wolny ? '' : ' taken');
     el.textContent = s.godzina;
     if (s.wolny){
-      el.onclick = () => {
+      jakPrzycisk(el, `Godzina ${s.godzina}`, () => {
         wyczyscBladTerminu();
         godz = s.godzina;
-        [...box.children].forEach((x) => x.classList.remove('sel'));
-        el.classList.add('sel');
+        zaznaczJeden(box, el);
         odswiez();
-      };
+      });
+    } else {
+      el.setAttribute('aria-disabled', 'true');
+      el.setAttribute('aria-label', `Godzina ${s.godzina} — termin zajęty`);
     }
     box.appendChild(el);
   });
@@ -404,6 +439,7 @@ async function rysujSloty(){
 
 /* ---- recap ---- */
 const DNI_PELNE = ['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'];
+const MIESIACE_PELNE = ['stycznia','lutego','marca','kwietnia','maja','czerwca','lipca','sierpnia','września','października','listopada','grudnia'];
 function opisDnia(dataISO){
   const [r,m,d] = dataISO.split('-').map(Number);
   const wd = new Date(Date.UTC(r, m-1, d)).getUTCDay();
