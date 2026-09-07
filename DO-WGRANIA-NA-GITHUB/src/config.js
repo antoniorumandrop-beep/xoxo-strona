@@ -57,6 +57,23 @@ export const REZERWACJE = {
   maxMinutWizyty: 480,   // zabezpieczenie: dłuższa wizyta = błąd
 };
 
+/* --- OCHRONA PRZED BOTAMI --------------------------------------------------
+   Trzy proste zabezpieczenia, żadne nie przeszkadza prawdziwej klientce.
+   Gdyby kiedyś okazały się za ostre, wystarczy poluzować liczby tutaj
+   albo ustawić `wlaczona: false`.
+--------------------------------------------------------------------------- */
+export const OCHRONA = {
+  wlaczona: true,
+  /* Najkrótszy realny czas wypełniania formularza. Człowiek musi wybrać
+     zabieg, dzień, poczekać na godziny i wpisać trzy pola — to minimum
+     kilkanaście sekund. Bot wysyła natychmiast. */
+  minSekundNaFormularz: 8,
+  /* Ile rezerwacji z jednego łącza w danym oknie czasu. Rodzina z jednego
+     wi-fi spokojnie się mieści; bot zapychający kalendarz — nie. */
+  maxRezerwacjiZLacza: 5,
+  oknoMinut: 15,
+};
+
 /* --- DNI WOLNE / URLOP -----------------------------------------------------
    Szybki sposób na zamknięcie studia w konkretne dni: 'YYYY-MM-DD'.
    (Można też po prostu wstawić całodniowe wydarzenie w Google Calendar —

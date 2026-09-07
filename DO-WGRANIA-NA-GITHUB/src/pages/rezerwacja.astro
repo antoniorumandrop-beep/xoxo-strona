@@ -159,6 +159,8 @@ label.sv input:checked:after{content:"";position:absolute;left:6px;top:2px;width
 .field input:focus-visible,.field textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .field.zly input,.field.zly textarea{border-color:var(--alarm)}
 .field .blad{display:none;color:var(--alarm);font-size:.78rem;margin-top:5px}
+/* Pułapka na boty — pole niewidoczne dla człowieka i pomijane przez czytnik ekranu. */
+.pulapka{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 .field.zly .blad{display:block}
 .recap{background:var(--cream-deep);padding:24px;margin-bottom:22px}
 .recap h3{font-size:1.2rem;margin-bottom:14px}
@@ -221,6 +223,10 @@ label.sv input:checked:after{content:"";position:absolute;left:6px;top:2px;width
     <div class="field" id="pole-telefon"><label for="f-tel">Telefon</label><input id="f-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="600 100 200"><span class="blad"></span></div>
     <div class="field" id="pole-email"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="anna@example.com"><span class="blad"></span></div>
     <div class="field" id="pole-uwagi"><label for="f-note">Uwagi (opcjonalnie)</label><textarea id="f-note" rows="3" placeholder="Np. pierwszy raz na depilacji"></textarea><span class="blad"></span></div>
+    <div class="pulapka" aria-hidden="true">
+      <label for="f-trap">Adres korespondencyjny</label>
+      <input id="f-trap" name="adres-korespondencyjny" type="text" tabindex="-1" autocomplete="off">
+    </div>
     <label class="sv" style="border:1px solid var(--line);padding:14px">
       <input type="checkbox" id="f-first"><span class="sv-n">To moja pierwsza wizyta (doliczamy 10 min konsultacji)</span>
     </label>
@@ -259,6 +265,7 @@ const CFG = JSON.parse(document.getElementById('konfiguracja').textContent);
 const KAT = CFG.kategorie;
 
 let step = 1, wybrane = [], dzien = null, godz = null, wysylam = false;
+const wejscieNaStrone = Date.now();   // do odróżnienia człowieka od bota
 const WARN_DOMYSLNY = document.getElementById('warn-termin').innerHTML;
 let pobieranie = null;   // AbortController ostatniego zapytania o terminy
 
@@ -549,6 +556,8 @@ async function wyslij(){
         data: dzien, godzina: godz,
         zabiegi: wybrane.map((w) => w.id),
         pierwszaWizyta, imie, telefon, email, uwagi,
+        adresKorespondencyjny: document.getElementById('f-trap').value,
+        wypelnianieSekund: Math.round((Date.now() - wejscieNaStrone) / 1000),
       }),
     });
     dane = await odp.json();
@@ -571,6 +580,10 @@ async function wyslij(){
   if (dane.blad === 'ZAJETY'){
     idz(2);                       // idz(2) samo odświeża listę godzin
     pokazBladTerminu(dane.komunikat);
+    return;
+  }
+  if (dane.blad === 'ODRZUCONE'){
+    pokazBlad(`${dane.komunikat} Jeśli problem się powtarza, zadzwoń: <a href="tel:${CFG.telefon.replace(/\s/g,'')}">${CFG.telefon}</a>.`);
     return;
   }
   if (dane.blad === 'DANE'){

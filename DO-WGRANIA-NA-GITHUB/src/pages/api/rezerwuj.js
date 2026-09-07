@@ -9,6 +9,7 @@ import { przygotujWizyte, tytulWydarzenia, opisWydarzenia } from '../../lib/wizy
 import { sprawdzTermin, blokWizyty } from '../../lib/terminy.js';
 import { dodajWydarzenie, BladKalendarza } from '../../lib/kalendarz.js';
 import { wyslijMaile } from '../../lib/maile.js';
+import { sprawdzZadanie } from '../../lib/ochrona.js';
 
 export const prerender = false;
 
@@ -27,6 +28,12 @@ export async function POST({ request }) {
     dane = await request.json();
   } catch {
     return json({ blad: 'DANE', komunikat: 'Nie udało się odczytać formularza.' }, 400);
+  }
+
+  // 0. Czy to w ogóle człowiek — pułapka na boty, czas wypełniania, liczba prób.
+  const straz = sprawdzZadanie(request, dane);
+  if (!straz.ok) {
+    return json({ blad: 'ODRZUCONE', komunikat: straz.komunikat }, straz.status);
   }
 
   // 1. Dane klientki i zabiegi (ceny i czasy z konfiguracji, nie z przeglądarki).
@@ -60,6 +67,9 @@ export async function POST({ request }) {
       od,
       doKiedy,
     });
+
+    // Rezerwacja się udała — zaliczamy ją do limitu z tego łącza.
+    if (straz.zapiszUdana) straz.zapiszUdana();
 
     // 4. Maile. Rezerwacja jest już zapisana — nawet gdy poczta zawiedzie,
     //    potwierdzamy klientce termin i mówimy, co się stało.
