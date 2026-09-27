@@ -53,6 +53,13 @@ const FAQ = [
   }
 ];
 
+/* Fotoodmładzanie — cennik renderujemy prosto z config.js: obszary z pakietami
+   trafiają do tabeli serii, pozostałe do listy pojedynczych zabiegów. */
+const FOTO = KATEGORIE.find((k) => k.id === 'fotoodmladzanie').zabiegi;
+const fotoSerie = FOTO.filter((z) => z.seria);
+const fotoPojedyncze = FOTO.filter((z) => !z.seria);
+const zl = (n) => `${n.toLocaleString('pl-PL').replace(/\s/g, '\u00a0')}\u00a0zł`;
+
 const OPISY_USLUG = {
   depilacja: 'Trwałe usuwanie owłosienia laserem w technologii SHR — dla kobiet i mężczyzn, na twarzy i ciele.',
   naczynka: 'Zamykanie pękniętych naczynek i rumienia światłem E-Light, na twarzy, szyi i dekolcie.',
@@ -507,6 +514,29 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
 .svc-prices{display:grid;grid-template-columns:1fr 1fr;gap:0 44px}
 @media(max-width:760px){.svc-prices{grid-template-columns:1fr}}
 .svc-note{margin-top:18px;font-size:.8rem;color:var(--gold);font-style:italic}
+.series{width:100%;border-collapse:collapse}
+.series th{
+  font-family:'Jost',sans-serif;font-weight:500;font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);text-align:right;padding:0 0 12px 16px;
+  border-bottom:1px solid var(--line);white-space:nowrap;
+}
+.series th:first-child{text-align:left;padding-left:0}
+.series td{padding:15px 0 15px 16px;border-bottom:1px solid var(--line);text-align:right;vertical-align:baseline}
+.series td:first-child{text-align:left;padding-left:0;font-size:.97rem}
+.series b{font-family:'Playfair Display',serif;font-weight:500;font-size:1.12rem;white-space:nowrap}
+.series small{display:block;font-family:'Jost',sans-serif;font-size:.72rem;color:var(--gold);margin-top:2px;white-space:nowrap}
+@media(max-width:760px){
+  .series thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .series tr{display:block;padding:16px 0;border-bottom:1px solid var(--line)}
+  .series td{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:4px 0;border:0}
+  .series td:first-child{font-family:'Playfair Display',serif;font-size:1.08rem;padding-bottom:8px}
+  .series td[data-label]:before{content:attr(data-label);font-size:.85rem;color:var(--ink-soft)}
+  .series small{display:inline;margin:0 8px 0 0}
+}
+.svc-sub{
+  font-family:'Jost',sans-serif;font-weight:500;font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);margin:34px 0 4px;
+}
 .ig-link{display:inline-flex;align-items:center;gap:9px;text-decoration:none}
 .ig-link svg{width:19px;height:19px}
 
@@ -763,30 +793,43 @@ details[open] .svc-toggle{background:var(--gold);color:var(--cream);transform:ro
       <summary>
         <div class="svc-t">
           <h3>Fotoodmładzanie światłem szerokopasmowym <span class="tech">SSR</span></h3>
-          <p>Efekt skóry jak z filtrem — wyrównany koloryt, mniej przebarwień i rumienia, przy okazji lepsze napięcie skóry.</p>
+          <p>Zadbaj o wygląd i jakość skóry przy pomocy światła.</p>
         </div>
         <div class="svc-toggle">+</div>
       </summary>
       <div class="svc-body">
         <div class="svc-desc">
-          <div><h4>Na czym polega</h4><p>Technologia SSR — szerokopasmowe światło ogrzewa skórę i wyrównuje jej koloryt, jednocześnie stymulując produkcję kolagenu.</p></div>
-          <div><h4>Jak przebiega</h4><p>Przyjemne, ciepłe impulsy na oczyszczonej skórze. Bez okresu rekonwalescencji — od razu wracasz do codzienności.</p></div>
-          <div><h4>Efekty</h4><p>Wyrównuje koloryt, redukuje przebarwienia i rumień, pobudza produkcję kolagenu oraz poprawia napięcie i elastyczność skóry. Dzięki temu wygładza drobne zmarszczki, przywraca skórze blask i subtelnie poprawia owal twarzy.</p></div>
+          <div><h4>Dla kogo</h4><p>Fotoodmładzanie SSR to zabieg dla osób, które zauważają nierówny koloryt, drobne zmarszczki, utratę jędrności lub mniej wyraźny owal twarzy.</p></div>
+          <div><h4>Cel zabiegu</h4><p>Jego celem jest stopniowa poprawa wyglądu skóry, jej napięcia i elastyczności.</p></div>
+          <div><h4>Jak przebiega</h4><p>Podczas wizyty dobieramy obszar i plan zabiegowy do potrzeb Twojej skóry. Najlepsze efekty budujemy w serii; liczbę wizyt ustalamy indywidualnie.</p></div>
         </div>
-        <div class="svc-prices">
-          <div>
-            <div class="price-row"><span>Dłonie</span><b>249 zł</b></div>
-            <div class="price-row"><span>Brzuch</span><b>329 zł</b></div>
-            <div class="price-row"><span>Przedramiona</span><b>329 zł</b></div>
-            <div class="price-row"><span>Ramiona</span><b>329 zł</b></div>
+        <table class="series">
+          <caption class="svc-sub" style="text-align:left;margin-top:0">Twarz, szyja i dekolt — ceny serii</caption>
+          <thead>
+            <tr><th scope="col">Obszar</th><th scope="col">1 zabieg</th><th scope="col">Seria x3</th><th scope="col">4 + 1 gratis</th></tr>
+          </thead>
+          <tbody>
+            {fotoSerie.map((z) => (
+            <tr>
+              <td>{z.nazwa}</td>
+              <td data-label="1 zabieg"><b>{zl(z.cena)}</b></td>
+              <td data-label="Seria x3"><b><small>oszczędzasz {zl(3 * z.cena - z.seria.x3)}</small>{zl(z.seria.x3)}</b></td>
+              <td data-label="4 + 1 gratis"><b><small>oszczędzasz {zl(5 * z.cena - z.seria.x5)}</small>{zl(z.seria.x5)}</b></td>
+            </tr>
+            ))}
+          </tbody>
+        </table>
+        <div class="svc-note">Zabieg fotoodmładzania zalecany jest w seriach, by uzyskać jak najlepsze efekty.</div>
+        {fotoPojedyncze.length > 0 && (
+        <>
+          <div class="svc-sub">Pozostałe obszary — pojedynczy zabieg</div>
+          <div class="svc-prices">
+            {fotoPojedyncze.map((z) => (
+            <div class="price-row"><span>{z.nazwa}</span><b>{zl(z.cena)}</b></div>
+            ))}
           </div>
-          <div>
-            <div class="price-row"><span>Twarz</span><b>419 zł</b></div>
-            <div class="price-row"><span>Szyja + dekolt</span><b>419 zł</b></div>
-            <div class="price-row"><span>Twarz + szyja lub dekolt</span><b>499 zł</b></div>
-            <div class="price-row"><span>Twarz + szyja + dekolt</span><b>579 zł</b></div>
-          </div>
-        </div>
+        </>
+        )}
         <div class="svc-note">Przed każdym zabiegiem wykonujemy bezpłatną konsultację i dobieramy parametry do Twojej skóry.</div>
       </div>
     </details>
