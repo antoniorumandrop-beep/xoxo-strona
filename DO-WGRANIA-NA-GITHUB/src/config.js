@@ -86,6 +86,9 @@ export const DNI_ZAMKNIETE = [
 /* --- CENNIK / ZABIEGI ------------------------------------------------------
    id  — nie zmieniaj po uruchomieniu (trafia w linki i w wysyłkę formularza)
    czas — minuty samego zabiegu, BEZ bufora
+   seria — (opcjonalnie) cena pakietu: x3 = seria 3 zabiegów, x5 = 4 + 1 gratis.
+           Pakiet pokazujemy tylko w cenniku na stronie; rezerwacja online
+           zawsze zapisuje pojedynczą wizytę w cenie `cena`.
 --------------------------------------------------------------------------- */
 export const KATEGORIE = [
   {
@@ -155,10 +158,10 @@ export const KATEGORIE = [
       { id: 'foto-brzuch',      nazwa: 'Brzuch',                           cena: 329, czas: 30 },
       { id: 'foto-przedramiona',nazwa: 'Przedramiona',                     cena: 329, czas: 35 },
       { id: 'foto-ramiona',     nazwa: 'Ramiona',                          cena: 329, czas: 35 },
-      { id: 'foto-twarz',       nazwa: 'Twarz',                            cena: 419, czas: 60 },
-      { id: 'foto-szyja-dek',   nazwa: 'Szyja + dekolt',                   cena: 419, czas: 60 },
-      { id: 'foto-tw-sz',       nazwa: 'Twarz + szyja lub dekolt',         cena: 499, czas: 90 },
-      { id: 'foto-tw-sz-dek',   nazwa: 'Twarz + szyja + dekolt',           cena: 579, czas: 90 },
+      { id: 'foto-twarz',       nazwa: 'Twarz',                            cena: 399, czas: 60, seria: { x3: 1049, x5: 1599 } },
+      { id: 'foto-szyja-dek',   nazwa: 'Szyja + dekolt',                   cena: 399, czas: 60, seria: { x3: 1049, x5: 1599 } },
+      { id: 'foto-tw-sz',       nazwa: 'Twarz + szyja lub dekolt',         cena: 499, czas: 90, seria: { x3: 1349, x5: 1999 } },
+      { id: 'foto-tw-sz-dek',   nazwa: 'Twarz + szyja + dekolt',           cena: 599, czas: 90, seria: { x3: 1549, x5: 2399 } },
     ],
   },
 ];
